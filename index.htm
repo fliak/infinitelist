@@ -4,26 +4,59 @@
         <script type="text/javascript" src="js/applayout.js"></script>
 
         <style>
-            .container  {
-                overflow: scroll;
+            div {
+                border: dotted thin black;
+            }
+            .work-area  {
+                position: absolute;
+                width: inherit;
+                height: 100px;
+                border: dashed thin black;
+                background-color: aliceblue;
+            }
 
+            .scroll-box  {
+                position: relative;
+                overflow: auto;
+                width: inherit;
                 height: 100px;
             }
 
             .fake-body  {
                 height: 1000px;
+                background-color: transparent;
+                border: none;
+            }
+
+            .cmp-body   {
+                width: 300px;
+            }
+
+            .clear  {
+                clear: both;
             }
         </style>
     </head>
 
     <body>
         <div class="wrapper">
-            <div id="scroll-cmp">
-                <div class="container">
+            <div id="scroll-cmp" class="cmp-body">
+                <div class="work-area">
+dasdqw
+                    dwqdqw
+                    dwq<br />
+                    dq<br /><br />
+                    wd<br />
+                    wqdqw
+                </div>
+                <div class="scroll-box">
+
                     <div class="fake-body">
+
 
                     </div>
                 </div>
+                <div class="clear"></div>
             </div>
         </div>
 
