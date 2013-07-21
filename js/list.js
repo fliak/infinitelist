@@ -146,6 +146,24 @@ List.prototype = {
             var rowStart = Math.round(scroll / that.getRowHeight());
             that._scrollTo.call(that, rowStart);
         }
+
+        /**
+         * FIXME should be redesigned
+         * @param e
+         */
+        document.onkeydown = function(e) {
+            console.log(e);
+            switch (e.keyCode)  {
+                case 38:
+                    that._structure.scrollBox.scrollTop = that._structure.scrollBox.scrollTop - that.getRowHeight();
+                    break;
+
+                case 40:
+                    that._structure.scrollBox.scrollTop = that._structure.scrollBox.scrollTop + that.getRowHeight();
+                    break;
+            }
+
+        }
     },
 
     _scrollTo: function(rowStart)    {
