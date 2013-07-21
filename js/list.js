@@ -32,6 +32,8 @@ var List = function(config)   {
     }
 
     this._generator = this.config.generator;
+    this.model = this.config.model;
+
 
     this.init();
 
@@ -41,6 +43,7 @@ List.prototype = {
     rowStart: 0,
     rowCount: 0,
     el: null,
+    model: null,
     init: function()    {
 
         this._setupLayout();
@@ -141,13 +144,7 @@ List.prototype = {
         this._structure.scrollBox.onscroll = function(e) {
             var scroll = e.target.scrollTop;
             var rowStart = Math.round(scroll / that.getRowHeight());
-            console.log('scroll', scroll, rowStart)
             that._scrollTo.call(that, rowStart);
-        }
-
-        this._structure.workArea.mousewheel = function(e) {
-            console.log(e)
-            quickDelegate(e, this._structure.scrollBox);
         }
     },
 
@@ -162,9 +159,17 @@ List.prototype = {
         index = 0;
         this.config.model.each(this.rowStart, this.rowStart + this.rowCount - 1, function(key, value)   {
             var tr = this.getAt(index);
+            tr.setAttribute('data-index', key);
             this.fillRowWithData(tr, value);
             index++;
         }, this);
+    },
+
+    setValue: function(rowIndex, propName, value)  {
+        var dataIndex = this.rowStart + rowIndex;
+        this.config.model.setValue(rowIndex, propName, value);
+
+        this.config.listeners.change.apply(this, arguments);
     },
 
     _createRowStructure: function(rowEl, rowIndex)   {
@@ -178,6 +183,13 @@ List.prototype = {
             switch(columnConf.type) {
                 case 'radio':
                     var control = this._generator.getRadioSet(rowIndex, colIndex, columnConf.enum);
+
+                    sdk.on(control.children, 'change', function(e)   {
+                        var rowIndex = e.target.parentNode.parentNode.parentNode.getAttribute('data-index');
+                        console.log(rowIndex, e.target.parentNode.parentNode.parentNode)
+                        this.setValue(rowIndex, propName, e.target.value);
+
+                    }, this);
                     columns[colIndex].appendChild(control);
                     break;
                 default:
@@ -205,10 +217,10 @@ List.prototype = {
                     for (cIterator = 0; cIterator < radioSet.length; cIterator++)  {
                         control = radioSet[cIterator];
                         if (control.getAttribute('value') == dataRow[propName])    {
-                            control.setAttribute('checked', 'checked');
+                            control.checked = true;
                         }
                         else    {
-                            control.removeAttribute('checked');
+                            control.checked = false;
                         }
                     }
                     break;

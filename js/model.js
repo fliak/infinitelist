@@ -26,6 +26,9 @@ var dataSource = {
             });
         }
     },
+    restore: function(data) {
+        this.data = data;
+    },
 
     getCount: function()    {
         return this.data.length;
@@ -62,5 +65,14 @@ var dataSource = {
 
     getData: function(from, to)   {
         return this.data.slice(from, to);
+    },
+
+    setValue: function(index, propName, value)  {
+        this.data[index][propName] = value;
+
+    },
+
+    serialize: function()   {
+        return JSON.stringify(this.data);
     }
 };

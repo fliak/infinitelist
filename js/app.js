@@ -2,7 +2,26 @@ var app = {};
 
 window.onload = function()    {
 
-    dataSource.prepare(1000);
+    if(typeof(Storage) === 'undefined') {
+        alert('No web storage support, so you can\'t save your changes.')
+    }
+    else    {
+        if (localStorage.gurtam_data === undefined) {
+            dataSource.prepare(1000);
+        }
+        else    {
+            try {
+                var data = JSON.parse(localStorage.gurtam_data);
+                dataSource.restore(data);
+            }
+            catch(e)    {
+                dataSource.prepare(1000);
+            }
+
+        }
+    }
+
+
 
     app.list = new List({
         id: 'scroll-cmp',
@@ -21,16 +40,13 @@ window.onload = function()    {
                 enum: [0, 1, 2]
             }
 
+        },
+        listeners: {
+            change: function()  {
+                var dataString = this.model.serialize();
+                localStorage.gurtam_data = dataString;
+            }
         }
     });
 
-};
-
-quickDelegate = function(event, target) {
-    var eventCopy = document.createEvent("MouseEvents");
-    eventCopy.initMouseEvent(event.type, event.bubbles, event.cancelable, event.view, event.detail,
-        event.pageX || event.layerX, event.pageY || event.layerY, event.clientX, event.clientY, event.ctrlKey, event.altKey,
-        event.shiftKey, event.metaKey, event.button, event.relatedTarget);
-    target.dispatchEvent(eventCopy);
-    // ... and in webkit I could just dispath the same event without copying it. eh.
 };

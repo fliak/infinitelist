@@ -43,3 +43,27 @@ sdk.apply = function (firstObject, secondObject)    {
     }
 
 };
+
+sdk.on = function(el, event, fn, scope)    {
+    scope = scope || this;
+    if (el instanceof Array || el instanceof HTMLCollection)    {
+        for (var i in el)   {
+            sdk.on (el[i], event, fn, scope);
+        }
+
+        return;
+    }
+
+    el['on' + event] = function()   {
+        fn.apply(scope, arguments);
+    }
+}
+
+sdk.setCookie = function(key, value, exdays)
+{
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var cValue = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+
+    document.cookie = key + "=" + cValue;
+}
