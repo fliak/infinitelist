@@ -1,0 +1,32 @@
+.work-area  {
+    position: absolute;
+    overflow: auto;
+    height: inherit;
+    background-color: aliceblue;
+
+    z-index: 1;
+
+    border: none;
+    padding:0px;
+    margin:0px;
+}
+
+.scroll-box  {
+    position: relative;
+    overflow: auto;
+    width: inherit;
+    height: inherit;
+
+    border: none;
+    padding:0px;
+    margin:0px;
+}
+
+.fake-body  {
+    height: 1000px;
+    background-color: transparent;
+    border: none;
+    padding:0px;
+    margin:0px;
+
+}
